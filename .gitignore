@@ -1,0 +1,19 @@
+# Ignore Python / Django
+*.pyc
+__pycache__/
+venv/
+*.sqlite3
+
+# Ignore Next.js / Node.js
+node_modules/
+.next/
+out/
+
+# Ignore environment files
+.env
+
+# Ignore VSCode settings
+.vscode/
+
+# Ignore n8n local files
+.n8n/
