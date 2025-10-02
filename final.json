@@ -1,0 +1,194 @@
+{
+  "name": "final",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "student_application",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "15085c36-1abc-4179-a059-c4f9d578da0b",
+      "name": "Webhook",
+      "webhookId": "fea47f4b-baa7-4c55-86ea-5fe5b50fde8b"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "10GFHR1g1X1ZcdVDzzrapra6Se7XGVYW_2vfZwqouWIQ",
+          "mode": "list",
+          "cachedResultName": "Application_form",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10GFHR1g1X1ZcdVDzzrapra6Se7XGVYW_2vfZwqouWIQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10GFHR1g1X1ZcdVDzzrapra6Se7XGVYW_2vfZwqouWIQ/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "full_name": "={{$json.body.full_name}}",
+            "email": "={{ $json.body['email'] }}",
+            "phone_number": "={{$json.body.phone_number}}",
+            "course_applied": "={{ $json.body.course_applied }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "full_name",
+              "displayName": "full_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "phone_number",
+              "displayName": "phone_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "course_applied",
+              "displayName": "course_applied",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "b66e9235-1d78-4161-a18d-cc4172d8c57c",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Lxku3u0AIisnlH6V",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['email'] }}",
+        "subject": "Application Received",
+        "emailType": "text",
+        "message": "=Hello {{$json[\"Name\"]}},  Your application for the course {{$json[\"Course\"]}} has been received successfully. Our admission team will contact you shortly.  Thank you!",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        416,
+        0
+      ],
+      "id": "411d3d9e-6e19-4d10-9593-fdaf00d8c0f0",
+      "name": "Send a message",
+      "webhookId": "b9b6f494-ce3d-4a6a-a6e9-a536f234d4d1",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "5Lwp9QCf3991vB2X",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "rishajahan6047@gmail.com",
+        "subject": "New Application",
+        "emailType": "text",
+        "message": "=New application received:  Name: {{$json[\"name\"]}} Email: {{$json[\"email\"]}} Phone: {{$json['phone_number ']}} Course: {{$json[\"course_applied\"]}}  Check the Google Sheet for more details.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        432,
+        192
+      ],
+      "id": "bc9cead3-007d-415b-8ce9-45baae25aa28",
+      "name": "Send a message1",
+      "webhookId": "ae5a3c2f-a2dc-4513-8993-de53d86129a4",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "5Lwp9QCf3991vB2X",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "5bea3325-04c5-4a09-9a1f-fb525a9695f4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "eae42d82adc83875fecf1502c415e5927a1c6e92b403e87b7ea26cba7c22fd97"
+  },
+  "id": "dZttzfpAYkzonSMd",
+  "tags": []
+}
